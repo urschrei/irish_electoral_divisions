@@ -17,37 +17,3 @@ $theme-colors: (
 @import "../node_modules/bootstrap/scss/bootstrap";
 // mapbox-gl isn't scss, but the compiler seems OK with it anyway
 @import "../node_modules/mapbox-gl/dist/mapbox-gl";
-
-// #map, #sidebar {
-//     padding: 10px;
-// }
-
-// #infrainfo {
-//     margin-top: 20px;
-// }
-
-// #infratitle {
-//     margin-top: 20px;
-// }
-
-.honly {
-    border-color: #212529 !important;
-    border: 1px solid;
-}
-
-// .carousel-control-next,
-// .carousel-control-prev {
-//     filter: invert(100%);
-// }
-
-.ztop {
-    z-index: 1;
-}
-
-.gamechart {
-    background-color: #ebe3de;
-}
-
-.strikethrough {
-        text-decoration: line-through;
-}
