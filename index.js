@@ -48,7 +48,7 @@ function getProperties(e) {
         </div>
     </div>`;
 
-    new mapboxgl.Popup()
+    new mapboxgl.Popup({ className: 'border-dark' })
         .setLngLat(coordinates)
         .setHTML(template)
         .addTo(map);
