@@ -17,13 +17,13 @@ function getProperties(e) {
             'type': 'LEA',
             'county': `${e.features[0]['properties']['COUNTY']}`,
             'title': `Name: ${e.features[0]['properties']['CSO_LEA']}`,
-            'id': `LEA ID: ${e.features[0]['properties']['LEA_ID']}`
+            'id': `ID: ${e.features[0]['properties']['LEA_ID']}`
         }:
         {
             'type': 'Electoral Division',
             'county': `${e.features[0]['properties']['COUNTY_ENGLISH']}`,
             'title': `Name: ${e.features[0]['properties']['ED_ENGLISH']}`,
-            'id': `ED ID: ${e.features[0]['properties']['ED_ID_STR']}`
+            'id': `ID: ${e.features[0]['properties']['ED_ID_STR']}`
         };
     let coordinates = e.lngLat;
     // // Ensure that if the map is zoomed out such that multiple
@@ -40,7 +40,7 @@ function getProperties(e) {
                         <div class="card-header">${description.type}</div>
                         <div class="card-body">
                             <h5 class="card-title">${description.id}</h5>
-                            <h6 class="card-subtitle mb-2 text-muted">${description.county}</h6>
+                            <h6 class="card-subtitle mb-2 text-opacity-50">${description.county}</h6>
                             <p class="card-text">${description.title}</p>
                         </div>
                   </div>
