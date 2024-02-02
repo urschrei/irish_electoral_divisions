@@ -9,7 +9,9 @@ You search for a specific place and see its ED and LEA information by using the 
 
 # Data Sources
 As of February 2024, these are the most up-to-date data, refreshed in November 2023.
+
 [CSO Electoral Divisions, 2022](https://www.geohive.ie/datasets/60b27acc557d4e8bb4b5a781f0622c39_1/about)
+
 [CSO Local Electoral Areas, 2022](https://www.geohive.ie/datasets/e73ec0ad02654778adca35fa86b24a5f_3/about)
 
 # CSO Data License
