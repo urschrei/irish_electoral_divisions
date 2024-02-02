@@ -1,12 +1,11 @@
 import 'bootstrap';
 import './style.scss';
 import mapboxgl from 'mapbox-gl';
-
+import MapboxGeocoder from '@mapbox/mapbox-gl-geocoder';
 mapboxgl.accessToken = 'pk.eyJ1IjoidXJzY2hyZWkiLCJhIjoiY2xzMzd6NzdnMHMxejJzbWszbHA2ZGk1ZCJ9.ovSNXA6ytYytX8zlex81iA';
 
 const positions = ['base', 'middle', 'top'];
 const divisions = ['ed', 'lea'];
-
 
 function getProperties(e) {
     // which layer is active? ed or lea?
@@ -60,50 +59,6 @@ function cursorOut(e) {
     map.getCanvas().style.cursor = '';
 }
 
-// Register and unregister click handlers for the active layer
-function registerLayerClick(division, reverse) {
-    const tmp = `cso-${division}-polygons`;
-    if (!reverse) {
-        map.on('click', tmp, getProperties);
-        map.on('mouseenter', tmp, cursorIn);
-        map.on('mouseleave', tmp, cursorOut);
-    } else {
-        map.off('click', tmp, getProperties);
-        map.off('mouseenter', tmp, cursorIn);
-        map.off('mouseleave', tmp, cursorOut);
-    }
-}
-
-const map = new mapboxgl.Map({
-    container: 'map',
-    style: 'mapbox://styles/urschrei/cls285qtr00ht01qqd92g58mt',
-    customAttribution: ['Electoral boundary data provided courtesy of CSO. Some extents have been simplified'],
-    // zoom: 11,
-    // minZoom: 8,
-    // center: centre,
-    // maxBounds: [{
-    //     'lng': -0.5533749005341804,
-    //     'lat': 51.31536873314653
-    // }, {
-    //     'lng': 0.4214032710438005,
-    //     'lat': 51.71445426713464
-    // }]
-});
-
-map.on('load', () => {
-    // required for Bootstrap layout
-    map.resize();
-    // assign correct opacity duration to each layer. Quadratic, but it's six values
-    positions.forEach((position) => {
-        divisions.forEach((division) => {
-            const template = `cso-${division}-polygons-${position}`;
-            map.setPaintProperty(template, 'line-opacity-transition', {'duration' :500, 'delay': 0});
-        });
-    });
-    // ed is active by default
-    registerLayerClick(divisions[0], false);
-});
-
 function toggle(on, off) {
     positions.forEach((position) => {
         const ontemplate = `cso-${on}-polygons-${position}`;
@@ -134,6 +89,63 @@ function glError() {
     elem.classList.remove('btn-outline-orange');
     elem.innerText = 'Couldn\'t geolocate you';
 }
+
+// Register and unregister click handlers for the active layer
+function registerLayerClick(division, reverse) {
+    const tmp = `cso-${division}-polygons`;
+    if (!reverse) {
+        map.on('click', tmp, getProperties);
+        map.on('mouseenter', tmp, cursorIn);
+        map.on('mouseleave', tmp, cursorOut);
+    } else {
+        map.off('click', tmp, getProperties);
+        map.off('mouseenter', tmp, cursorIn);
+        map.off('mouseleave', tmp, cursorOut);
+    }
+}
+
+const geocoder = new MapboxGeocoder({
+    accessToken: mapboxgl.accessToken,
+    mapboxgl: mapboxgl,
+    options: {
+        'country': 'ie',
+        'routing': false,
+        'proximity': 'ip',
+        'types': 'address',
+        'language': 'en'
+    }
+});
+
+const map = new mapboxgl.Map({
+    container: 'map',
+    style: 'mapbox://styles/urschrei/cls285qtr00ht01qqd92g58mt',
+    customAttribution: ['Electoral boundary data provided courtesy of CSO. Some extents have been simplified'],
+    // zoom: 11,
+    // minZoom: 8,
+    // center: centre,
+    // maxBounds: [{
+    //     'lng': -0.5533749005341804,
+    //     'lat': 51.31536873314653
+    // }, {
+    //     'lng': 0.4214032710438005,
+    //     'lat': 51.71445426713464
+    // }]
+});
+
+map.on('load', () => {
+    // required for Bootstrap layout
+    map.resize();
+    // assign correct opacity duration to each layer. Quadratic, but it's six values
+    positions.forEach((position) => {
+        divisions.forEach((division) => {
+            const template = `cso-${division}-polygons-${position}`;
+            map.setPaintProperty(template, 'line-opacity-transition', {'duration' :500, 'delay': 0});
+        });
+    });
+    map.addControl(geocoder);
+    // ed is active by default
+    registerLayerClick(divisions[0], false);
+});
 
 document.addEventListener('click', function(event) {
     const ed = divisions[0];
