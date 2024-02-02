@@ -23,7 +23,7 @@ let result = await esbuild.build({
     format: 'esm',
     splitting: true,
     globalName: 'electoralareas',
-    outdir: 'static/js',
+    outdir: 'static',
     plugins: [
         sassPlugin({
             async transform(source) {
@@ -37,4 +37,4 @@ let result = await esbuild.build({
     ],
 });
 // console.log(await esbuild.analyzeMetafile(result.metafile));
-fs.writeFileSync('static/js/meta.json', JSON.stringify(result.metafile));
+fs.writeFileSync('static/meta.json', JSON.stringify(result.metafile));
