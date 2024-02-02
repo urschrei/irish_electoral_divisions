@@ -6,6 +6,10 @@ mapboxgl.accessToken = 'pk.eyJ1IjoidXJzY2hyZWkiLCJhIjoiY2xzMzd6NzdnMHMxejJzbWszb
 
 const positions = ['base', 'middle', 'top'];
 const divisions = ['ed', 'lea'];
+const bounds = [
+    [-14.471549243406628, 51.04252955091917],
+    [-0.016129311437452998, 55.69861887397013]
+];
 
 function getProperties(e) {
     // which layer is active? ed or lea?
@@ -124,17 +128,8 @@ const geocoder = new MapboxGeocoder({
 export const map = new mapboxgl.Map({
     container: 'map',
     style: 'mapbox://styles/urschrei/cls285qtr00ht01qqd92g58mt',
+    maxBounds: bounds,
     customAttribution: ['<a href="https://www.geohive.ie/datasets/60b27acc557d4e8bb4b5a781f0622c39_1/about">Electoral Division</a> and <a href="https://www.geohive.ie/datasets/e73ec0ad02654778adca35fa86b24a5f_3/about">LEA data</a> provided by CSO'],
-    // zoom: 11,
-    // minZoom: 8,
-    // center: centre,
-    // maxBounds: [{
-    //     'lng': -0.5533749005341804,
-    //     'lat': 51.31536873314653
-    // }, {
-    //     'lng': 0.4214032710438005,
-    //     'lat': 51.71445426713464
-    // }]
 });
 
 map.on('load', () => {
