@@ -120,7 +120,7 @@ const geocoder = new MapboxGeocoder({
 const map = new mapboxgl.Map({
     container: 'map',
     style: 'mapbox://styles/urschrei/cls285qtr00ht01qqd92g58mt',
-    customAttribution: ['Electoral boundary data provided courtesy of CSO. Some extents have been simplified'],
+    customAttribution: ['Electoral boundary data provided by CSO.'],
     // zoom: 11,
     // minZoom: 8,
     // center: centre,
