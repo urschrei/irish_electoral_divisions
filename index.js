@@ -40,7 +40,7 @@ function getProperties(e) {
                         <div class="card-header">${description.type}</div>
                         <div class="card-body">
                             <h5 class="card-title">${description.id}</h5>
-                            <h6 class="card-subtitle mb-2 text-primary text-opacity-75">${description.county}</h6>
+                            <h6 class="card-subtitle mb-2 text-orange text-opacity-75">${description.county}</h6>
                             <p class="card-text">${description.title}</p>
                         </div>
                   </div>
