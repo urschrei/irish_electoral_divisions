@@ -85,9 +85,10 @@ function glSuccess(position) {
 // If we can't geolocate for some reason
 function glError() {
     let elem = document.getElementById('locate');
-    elem.classList.add('btn-pink');
+    elem.classList.add('btn-dark');
     elem.classList.remove('btn-outline-orange');
     elem.innerText = 'Couldn\'t geolocate you';
+    elem.disabled = true;
 }
 
 // Register and unregister click handlers for the active layer
