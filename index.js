@@ -134,6 +134,11 @@ export const map = new mapboxgl.Map({
     // }]
 });
 
+const nav = new mapboxgl.NavigationControl({
+    visualizePitch: true
+});
+map.addControl(nav, 'top-left');
+
 map.on('load', () => {
     // required for Bootstrap layout
     map.resize();
