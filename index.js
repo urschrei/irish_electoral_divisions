@@ -109,10 +109,11 @@ const geocoder = new MapboxGeocoder({
     accessToken: mapboxgl.accessToken,
     mapboxgl: mapboxgl,
     options: {
-        'country': 'ie',
+        'placeholder': 'Address search',
+        'countries': 'ie',
         'routing': false,
         'proximity': 'ip',
-        'types': 'address',
+        'types': 'address,place,locality',
         'language': 'en'
     }
 });
