@@ -118,7 +118,7 @@ const geocoder = new MapboxGeocoder({
     }
 });
 
-const map = new mapboxgl.Map({
+export const map = new mapboxgl.Map({
     container: 'map',
     style: 'mapbox://styles/urschrei/cls285qtr00ht01qqd92g58mt',
     customAttribution: ['<a href="https://www.geohive.ie/datasets/60b27acc557d4e8bb4b5a781f0622c39_1/about">Electoral Division</a> and <a href="https://www.geohive.ie/datasets/e73ec0ad02654778adca35fa86b24a5f_3/about">LEA data</a> provided by CSO'],
