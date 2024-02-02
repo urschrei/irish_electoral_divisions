@@ -14,11 +14,13 @@ function getProperties(e) {
     // console.log(e.features[0]);
     const description = division === to_check?
         {
+            'type': 'LEA',
             'county': `${e.features[0]['properties']['COUNTY']}`,
             'title': `Name: ${e.features[0]['properties']['CSO_LEA']}`,
             'id': `LEA ID: ${e.features[0]['properties']['LEA_ID']}`
         }:
         {
+            'type': 'Electoral Division',
             'county': `${e.features[0]['properties']['COUNTY_ENGLISH']}`,
             'title': `Name: ${e.features[0]['properties']['ED_ENGLISH']}`,
             'id': `ED ID: ${e.features[0]['properties']['ED_ID_STR']}`
@@ -34,11 +36,12 @@ function getProperties(e) {
     <div class="row m-1">
         <div class="container">
             <div class="col">
-                  <div class="card text-bg-dark">
+                  <div class="card text-bg-secondary">
+                        <div class="card-header">${description.type}</div>
                         <div class="card-body">
-                        <h5 class="card-title">${description.id}</h5>
-                        <h6 class="card-subtitle mb-2 text-muted">${description.county}</h6>
-                              <p class="card-text">${description.title}</p>
+                            <h5 class="card-title">${description.id}</h5>
+                            <h6 class="card-subtitle mb-2 text-muted">${description.county}</h6>
+                            <p class="card-text">${description.title}</p>
                         </div>
                   </div>
             </div>
