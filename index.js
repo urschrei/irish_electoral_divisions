@@ -7,6 +7,73 @@ mapboxgl.accessToken = 'pk.eyJ1IjoidXJzY2hyZWkiLCJhIjoiY2xzMzd6NzdnMHMxejJzbWszb
 const positions = ['base', 'middle', 'top'];
 const divisions = ['ed', 'lea'];
 
+
+function getProperties(e) {
+    // which layer is active? ed or lea?
+    const division = e.features[0].layer.id;
+    const to_check = `cso-${divisions[1]}-polygons`;
+    // console.log(e.features[0]);
+    const description = division === to_check?
+        {
+            'county': `${e.features[0]['properties']['COUNTY']}`,
+            'title': `Name: ${e.features[0]['properties']['CSO_LEA']}`,
+            'id': `LEA ID: ${e.features[0]['properties']['LEA_ID']}`
+        }:
+        {
+            'county': `${e.features[0]['properties']['COUNTY_ENGLISH']}`,
+            'title': `Name: ${e.features[0]['properties']['ED_ENGLISH']}`,
+            'id': `ED ID: ${e.features[0]['properties']['ED_ID_STR']}`
+        };
+    let coordinates = e.lngLat;
+    // // Ensure that if the map is zoomed out such that multiple
+    // // copies of the feature are visible, the popup appears
+    // // over the copy being pointed to.
+    while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
+        coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
+    }
+    const template = `
+    <div class="row m-1">
+        <div class="container">
+            <div class="col">
+                  <div class="card text-bg-dark">
+                        <div class="card-body">
+                        <h5 class="card-title">${description.id}</h5>
+                        <h6 class="card-subtitle mb-2 text-muted">${description.county}</h6>
+                              <p class="card-text">${description.title}</p>
+                        </div>
+                  </div>
+            </div>
+        </div>
+    </div>`;
+
+    new mapboxgl.Popup()
+        .setLngLat(coordinates)
+        .setHTML(template)
+        .addTo(map);
+}
+
+function cursorIn(e) {
+    map.getCanvas().style.cursor = 'pointer';
+}
+
+function cursorOut(e) {
+    map.getCanvas().style.cursor = '';
+}
+
+// Register and unregister click handlers for the active layer
+function registerLayerClick(division, reverse) {
+    const tmp = `cso-${division}-polygons`;
+    if (!reverse) {
+        map.on('click', tmp, getProperties);
+        map.on('mouseenter', tmp, cursorIn);
+        map.on('mouseleave', tmp, cursorOut);
+    } else {
+        map.off('click', tmp, getProperties);
+        map.off('mouseenter', tmp, cursorIn);
+        map.off('mouseleave', tmp, cursorOut);
+    }
+}
+
 const map = new mapboxgl.Map({
     container: 'map',
     style: 'mapbox://styles/urschrei/cls285qtr00ht01qqd92g58mt',
@@ -33,6 +100,8 @@ map.on('load', () => {
             map.setPaintProperty(template, 'line-opacity-transition', {'duration' :500, 'delay': 0});
         });
     });
+    // ed is active by default
+    registerLayerClick(divisions[0], false);
 });
 
 function toggle(on, off) {
@@ -66,19 +135,22 @@ function glError() {
     elem.innerText = 'Couldn\'t geolocate you';
 }
 
-
 document.addEventListener('click', function(event) {
     const ed = divisions[0];
     const lea = divisions[1];
-    if (event.target.id == 'ed') {
+    if (event.target.id == ed) {
         const on = ed;
         const off = lea;
         toggle(on, off);
+        registerLayerClick(on, false);
+        registerLayerClick(off, true);
     }
-    if (event.target.id == 'lea') {
+    if (event.target.id == lea) {
         const on = lea;
         const off = ed;
         toggle(on, off);
+        registerLayerClick(on, false);
+        registerLayerClick(off, true);
     }
     if (event.target.id == 'locate') {
         navigator.geolocation.getCurrentPosition(glSuccess, glError, {
