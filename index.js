@@ -151,7 +151,7 @@ map.on('load', () => {
         });
     });
     divisions.forEach((division) => {
-        const template = `cso-${division}-polygons-`;
+        const template = `cso-${division}-polygons`;
         map.setPaintProperty(template, 'fill-opacity-transition', {'duration' :500, 'delay': 0});
     });
     map.addControl(geocoder);
