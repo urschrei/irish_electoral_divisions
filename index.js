@@ -16,7 +16,7 @@ function getProperties(e) {
     // which layer is active? ed or lea?
     const division = e.features[0].layer.id;
     const to_check = `cso-${divisions[1]}-polygons`;
-    const activeLayer = division === to_check? divisions[1] : divisions[0];
+    const activeLayer = division === to_check? `cso-${divisions[1]}-polygons` : `cso-${divisions[0]}-polygons`;
     // console.log(e.features[0]);
     const description = division === to_check?
         {
