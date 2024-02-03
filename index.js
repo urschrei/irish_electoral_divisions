@@ -147,15 +147,15 @@ map.on('load', () => {
     positions.forEach((position) => {
         divisions.forEach((division) => {
             const template = `cso-${division}-polygons-${position}`;
-            map.setPaintProperty(template, 'line-opacity-transition', {'duration' :500, 'delay': 0});
+            map.setPaintProperty(template, 'line-opacity-transition', {'duration': 500, 'delay': 0});
         });
     });
     divisions.forEach((division) => {
         const template = `cso-${division}-polygons`;
-        map.setPaintProperty(template, 'fill-opacity-transition', {'duration' :500, 'delay': 0});
+        map.setPaintProperty(template, 'fill-opacity-transition', {'duration': 500, 'delay': 0});
     });
     map.addControl(geocoder);
-    // ed is active by default
+    // make ed active by default
     registerLayerClick(divisions[0], false);
 });
 
