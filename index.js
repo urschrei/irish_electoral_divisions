@@ -2,8 +2,8 @@ import 'bootstrap';
 import './style.scss';
 import mapboxgl from 'mapbox-gl';
 import MapboxGeocoder from '@mapbox/mapbox-gl-geocoder';
-mapboxgl.accessToken = 'pk.eyJ1IjoidXJzY2hyZWkiLCJhIjoiY2xzMzd6NzdnMHMxejJzbWszbHA2ZGk1ZCJ9.ovSNXA6ytYytX8zlex81iA';
 
+const accessToken = 'pk.eyJ1IjoidXJzY2hyZWkiLCJhIjoiY2xzMzd6NzdnMHMxejJzbWszbHA2ZGk1ZCJ9.ovSNXA6ytYytX8zlex81iA';
 const positions = ['base', 'middle', 'top'];
 const divisions = ['ed', 'lea'];
 const bounds = [
@@ -81,6 +81,7 @@ function toggle(on, off) {
         const opacity = (position === 'base' || position === 'middle') ? 0.4 : 1.0;
         map.setPaintProperty(ontemplate, 'line-opacity', opacity);
         map.setPaintProperty(offtemplate, 'line-opacity', 0);
+        // switch off inactive polygon layer
         map.setPaintProperty(offbase, 'fill-opacity', 0);
     });
 
@@ -121,7 +122,7 @@ function registerLayerClick(division, reverse) {
 }
 
 const geocoder = new MapboxGeocoder({
-    accessToken: mapboxgl.accessToken,
+    accessToken: accessToken,
     mapboxgl: mapboxgl,
     options: {
         'placeholder': 'Address search',
@@ -134,6 +135,7 @@ const geocoder = new MapboxGeocoder({
 });
 
 export const map = new mapboxgl.Map({
+    accessToken: accessToken,
     container: 'map',
     style: 'mapbox://styles/urschrei/cls285qtr00ht01qqd92g58mt',
     maxBounds: bounds,
@@ -147,12 +149,12 @@ map.on('load', () => {
     positions.forEach((position) => {
         divisions.forEach((division) => {
             const template = `cso-${division}-polygons-${position}`;
-            map.setPaintProperty(template, 'line-opacity-transition', {'duration': 500, 'delay': 0});
+            map.setPaintProperty(template, 'line-opacity-transition', {'duration': 500});
         });
     });
     divisions.forEach((division) => {
         const template = `cso-${division}-polygons`;
-        map.setPaintProperty(template, 'fill-opacity-transition', {'duration': 500, 'delay': 0});
+        map.setPaintProperty(template, 'fill-opacity-transition', {'duration': 1000});
     });
     map.addControl(geocoder);
     // make ed active by default
@@ -162,20 +164,11 @@ map.on('load', () => {
 document.addEventListener('click', function(event) {
     const ed = divisions[0];
     const lea = divisions[1];
-    if (event.target.id == ed) {
-        const on = ed;
-        const off = lea;
-        toggle(on, off);
-        registerLayerClick(on, false);
-        registerLayerClick(off, true);
-    }
-    if (event.target.id == lea) {
-        const on = lea;
-        const off = ed;
-        toggle(on, off);
-        registerLayerClick(on, false);
-        registerLayerClick(off, true);
-    }
+    const on = event.target.id == ed? ed : lea;
+    const off = event.target.id == ed? lea : ed;
+    toggle(on, off);
+    registerLayerClick(on, false);
+    registerLayerClick(off, true);
     if (event.target.id == 'locate') {
         navigator.geolocation.getCurrentPosition(glSuccess, glError, {
             enableHighAccuracy: true,
