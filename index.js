@@ -10,6 +10,7 @@ const bounds = [
     [-14.471549243406628, 51.04252955091917],
     [-0.016129311437452998, 55.69861887397013]
 ];
+let popup;
 
 function getProperties(e) {
     const oid = e.features[0]['properties']['OBJECTID'];
@@ -58,7 +59,7 @@ function getProperties(e) {
             ['get', 'OBJECTID'], oid, 0.5 , 0
         ]
     );
-    new mapboxgl.Popup({ className: 'border-dark' })
+    popup = new mapboxgl.Popup()
         .setLngLat(coordinates)
         .setHTML(template)
         .addTo(map);
@@ -73,6 +74,7 @@ function cursorOut(e) {
 }
 
 function toggle(on, off) {
+    map.fire('closeAllPopups');
     positions.forEach((position) => {
         const ontemplate = `cso-${on}-polygons-${position}`;
         const offtemplate = `cso-${off}-polygons-${position}`;
@@ -159,6 +161,11 @@ map.on('load', () => {
     map.addControl(geocoder);
     // make ed active by default
     registerLayerClick(divisions[0], false);
+});
+
+// this is a custom event!
+map.on('closeAllPopups', () => {
+    popup.remove();
 });
 
 document.addEventListener('click', function(event) {
