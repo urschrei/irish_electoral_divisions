@@ -12,9 +12,11 @@ const bounds = [
 ];
 
 function getProperties(e) {
+    const oid = e.features[0]['properties']['OBJECTID'];
     // which layer is active? ed or lea?
     const division = e.features[0].layer.id;
     const to_check = `cso-${divisions[1]}-polygons`;
+    const activeLayer = division === to_check? divisions[1] : divisions[0];
     // console.log(e.features[0]);
     const description = division === to_check?
         {
@@ -51,7 +53,11 @@ function getProperties(e) {
             </div>
         </div>
     </div>`;
-
+    map.setPaintProperty(activeLayer, 'fill-opacity',
+        ['match',
+            ['get', 'OBJECTID'], oid, 0.5 , 0
+        ]
+    );
     new mapboxgl.Popup({ className: 'border-dark' })
         .setLngLat(coordinates)
         .setHTML(template)
@@ -70,10 +76,12 @@ function toggle(on, off) {
     positions.forEach((position) => {
         const ontemplate = `cso-${on}-polygons-${position}`;
         const offtemplate = `cso-${off}-polygons-${position}`;
+        const offbase = `cso-${off}-polygons`;
         // required for glow effect
         const opacity = (position === 'base' || position === 'middle') ? 0.4 : 1.0;
         map.setPaintProperty(ontemplate, 'line-opacity', opacity);
         map.setPaintProperty(offtemplate, 'line-opacity', 0);
+        map.setPaintProperty(offbase, 'fill-opacity', 0);
     });
 
 }
@@ -141,6 +149,10 @@ map.on('load', () => {
             const template = `cso-${division}-polygons-${position}`;
             map.setPaintProperty(template, 'line-opacity-transition', {'duration' :500, 'delay': 0});
         });
+    });
+    divisions.forEach((division) => {
+        const template = `cso-${division}-polygons-`;
+        map.setPaintProperty(template, 'fill-opacity-transition', {'duration' :500, 'delay': 0});
     });
     map.addControl(geocoder);
     // ed is active by default
