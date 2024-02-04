@@ -14,6 +14,8 @@ As of February 2024, these are the most up-to-date data, refreshed in November 2
 
 [CSO Local Electoral Areas, 2022](https://www.geohive.ie/datasets/e73ec0ad02654778adca35fa86b24a5f_3/about)
 
+[CSO: Characteristics of Residential Property Purchasers - Prices, Ages and Incomes at Local Electoral Areas](https://www.cso.ie/en/releasesandpublications/fp/fp-cropp/characteristicsofresidentialpropertypurchasers-pricesagesandincomesatlocalelectoralareaslea2021/)
+
 # CSO Data License
 [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/)
 
