@@ -14,7 +14,6 @@
         "sourceType": "module"
     },
     "rules": {
-        "no-constant-binary-expressions": "error",
         "no-unused-vars": "warn",
         "indent": [
             "error",

@@ -24,7 +24,9 @@ function getProperties(e) {
             'type': 'LEA',
             'county': `${e.features[0]['properties']['COUNTY']}`,
             'title': `Name: ${e.features[0]['properties']['CSO_LEA']}`,
-            'id': `ID: ${e.features[0]['properties']['LEA_ID']}`
+            'id': `ID: ${e.features[0]['properties']['LEA_ID']}`,
+            'median_income': `Median Income: ${e.features[0]['properties']['MEDIAN_INCOME']}`,
+            'median_price': `Median House Price: ${e.features[0]['properties']['MEDIAN_PRICE']}`
         }:
         {
             'type': 'Electoral Division',
@@ -39,21 +41,37 @@ function getProperties(e) {
     while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
         coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
     }
-    const template = `
-    <div class="row m-1">
-        <div class="container">
-            <div class="col">
-                  <div class="card text-bg-secondary">
+    const template = division === to_check?
+        `<div class="row m-1">
+            <div class="container">
+                <div class="col">
+                      <div class="card text-bg-secondary">
+                            <div class="card-header">${description.type}</div>
+                            <div class="card-body">
+                                <h5 class="card-title">${description.id}</h5>
+                                <h6 class="card-subtitle mb-2 text-orange text-opacity-75">${description.county}</h6>
+                                <p class="card-text">${description.title}</p>
+                                <p class="card-text">${description.median_income}</p>
+                                <p class="card-text">${description.median_price}</p>
+                            </div>
+                      </div>
+                </div>
+            </div>
+        </div>` :
+        `<div class="row m-1">
+            <div class="container">
+                <div class="col">
+                    <div class="card text-bg-secondary">
                         <div class="card-header">${description.type}</div>
                         <div class="card-body">
                             <h5 class="card-title">${description.id}</h5>
                             <h6 class="card-subtitle mb-2 text-orange text-opacity-75">${description.county}</h6>
                             <p class="card-text">${description.title}</p>
                         </div>
-                  </div>
+                    </div>
+                </div>
             </div>
-        </div>
-    </div>`;
+        </div>`;
     map.setPaintProperty(activeLayer, 'fill-opacity',
         ['match',
             ['get', 'OBJECTID'], oid, 0.5 , 0
