@@ -191,7 +191,11 @@ map.on('load', () => {
 
 // this is a custom event!
 map.on('closeAllPopups', () => {
-    popup.remove();
+    try {
+        popup.remove();
+    } catch (e) {
+        // swallow irrelevant error
+    }
 });
 
 document.addEventListener('click', function(event) {
