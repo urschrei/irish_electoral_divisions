@@ -58,9 +58,11 @@ function getProperties(e) {
                             <div class="card-body">
                                 <h5 class="card-title">${description.id}</h5>
                                 <h6 class="card-subtitle mb-2 text-orange text-opacity-75">${description.county}</h6>
-                                <ul class="list-group list-group-flush"><li class="list-group-item">${description.title}<li>
-                                <li class="list-group-item">${description.median_income}</li>
-                                <li class="list-group-item">${description.median_price}</li></ul>
+                                <ul class="list-group list-group-flush">
+                                    <li class="list-group-item">${description.title}</li>
+                                    <li class="list-group-item">${description.median_income}</li>
+                                    <li class="list-group-item">${description.median_price}</li>
+                                </ul>
                             </div>
                       </div>
                 </div>
