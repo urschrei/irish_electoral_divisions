@@ -33,7 +33,7 @@ function getProperties(e) {
             'county': `${e.features[0]['properties']['COUNTY']}`,
             'title': `Name: ${e.features[0]['properties']['CSO_LEA']}`,
             'id': `ID: ${e.features[0]['properties']['LEA_ID']}`,
-            'median_income': `Median Income (2021): ${formatter.formate(e.features[0]['properties']['MEDIAN_INCOME'])}`,
+            'median_income': `Median Income (2021): ${formatter.format(e.features[0]['properties']['MEDIAN_INCOME'])}`,
             'median_price': `Median House Price (2021): ${formatter.format(e.features[0]['properties']['MEDIAN_PRICE'])}`
         }:
         {
