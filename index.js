@@ -18,7 +18,7 @@ function getProperties(e) {
     const division = e.features[0].layer.id;
     const to_check = `cso-${divisions[1]}-polygons`;
     const activeLayer = division === to_check? `cso-${divisions[1]}-polygons` : `cso-${divisions[0]}-polygons`;
-    // console.log(e.features[0]);
+    console.log(e.features[0]);
     const description = division === to_check?
         {
             'type': 'LEA',
@@ -50,9 +50,9 @@ function getProperties(e) {
                             <div class="card-body">
                                 <h5 class="card-title">${description.id}</h5>
                                 <h6 class="card-subtitle mb-2 text-orange text-opacity-75">${description.county}</h6>
-                                <p class="card-text">${description.title}</p>
-                                <p class="card-text">${description.median_income}</p>
-                                <p class="card-text">${description.median_price}</p>
+                                <ul class="list-group list-group-flush"><li class="list-group-item"><${description.title}<li>
+                                <li class="list-group-item">${description.median_income}</li>
+                                <li class="list-group-item">${description.median_price}</li></ul>
                             </div>
                       </div>
                 </div>
