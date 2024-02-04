@@ -10,6 +10,14 @@ const bounds = [
     [-14.471549243406628, 51.04252955091917],
     [-0.016129311437452998, 55.69861887397013]
 ];
+const formatter = new Intl.NumberFormat('en-IE', {
+    style: 'currency',
+    currency: 'EUR',
+
+    // These options are needed to round to whole numbers if that's what you want.
+    minimumFractionDigits: 0, // (this suffices for whole numbers, but will print 2500.10 as $2,500.1)
+    maximumFractionDigits: 0, // (causes 2500.99 to be printed as $2,501)
+});
 let popup;
 
 function getProperties(e) {
@@ -25,8 +33,8 @@ function getProperties(e) {
             'county': `${e.features[0]['properties']['COUNTY']}`,
             'title': `Name: ${e.features[0]['properties']['CSO_LEA']}`,
             'id': `ID: ${e.features[0]['properties']['LEA_ID']}`,
-            'median_income': `Median Income: ${e.features[0]['properties']['MEDIAN_INCOME']}`,
-            'median_price': `Median House Price: ${e.features[0]['properties']['MEDIAN_PRICE']}`
+            'median_income': `Median Income (2021): ${formatter.formate(e.features[0]['properties']['MEDIAN_INCOME'])}`,
+            'median_price': `Median House Price (2021): ${formatter.format(e.features[0]['properties']['MEDIAN_PRICE'])}`
         }:
         {
             'type': 'Electoral Division',
