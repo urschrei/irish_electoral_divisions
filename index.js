@@ -117,7 +117,7 @@ function toggle(on, off) {
 
 }
 
-// Locate nearest chain if geolocation is successful
+// Fly to point if geolocation is successful
 function glSuccess(position) {
     const lon = position.coords.longitude;
     const lat = position.coords.latitude;
@@ -217,11 +217,6 @@ document.addEventListener('click', function(event) {
         registerLayerClick(on, false);
         registerLayerClick(off, true);
     }
-    // const on = event.target.id == ed? ed : lea;
-    // const off = event.target.id == ed? lea : ed;
-    // toggle(on, off);
-    // registerLayerClick(on, false);
-    // registerLayerClick(off, true);
     if (event.target.id == 'locate') {
         navigator.geolocation.getCurrentPosition(glSuccess, glError, {
             enableHighAccuracy: true,
