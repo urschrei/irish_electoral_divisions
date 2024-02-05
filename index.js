@@ -99,6 +99,7 @@ function cursorOut(e) {
     map.getCanvas().style.cursor = '';
 }
 
+// toggle layer visibility
 function toggle(on, off) {
     map.fire('closeAllPopups');
     positions.forEach((position) => {
@@ -185,8 +186,8 @@ map.on('load', () => {
         map.setPaintProperty(template, 'fill-opacity-transition', {'duration': 1000});
     });
     map.addControl(geocoder);
-    // make ed active by default
-    registerLayerClick(divisions[1], false);
+    // make LEA active by default
+    makeActive(divisions[1]);
 });
 
 // this is a custom event!
@@ -198,22 +199,34 @@ map.on('closeAllPopups', () => {
     }
 });
 
-document.addEventListener('click', function(event) {
+function makeActive(division) {
     const ed = divisions[0];
     const lea = divisions[1];
-    if (event.target.id == ed) {
+    if (division === ed) {
         const on = ed;
         const off = lea;
         toggle(on, off);
         registerLayerClick(on, false);
         registerLayerClick(off, true);
     }
-    if (event.target.id == lea) {
+    if (division === lea) {
         const on = lea;
         const off = ed;
         toggle(on, off);
         registerLayerClick(on, false);
         registerLayerClick(off, true);
+    }
+    document.getElementById(division).checked = true;
+}
+
+document.addEventListener('click', function(event) {
+    const ed = divisions[0];
+    const lea = divisions[1];
+    if (event.target.id == ed) {
+        makeActive(ed);
+    }
+    if (event.target.id == lea) {
+        makeActive(lea);
     }
     if (event.target.id == 'locate') {
         navigator.geolocation.getCurrentPosition(glSuccess, glError, {
