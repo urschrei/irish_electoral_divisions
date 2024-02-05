@@ -222,16 +222,21 @@ function makeActive(division) {
 document.addEventListener('click', function(event) {
     const ed = divisions[0];
     const lea = divisions[1];
-    if (event.target.id == ed) {
+    switch (event.target.id) {
+    case ed: {
         makeActive(ed);
+        break;
     }
-    if (event.target.id == lea) {
+    case lea: {
         makeActive(lea);
+        break;
     }
-    if (event.target.id == 'locate') {
+    case 'locate': {
         navigator.geolocation.getCurrentPosition(glSuccess, glError, {
             enableHighAccuracy: true,
             timeout: 2500
         });
+        break;
+    }
     }
 });
