@@ -238,5 +238,7 @@ document.addEventListener('click', function(event) {
         });
         break;
     }
+    default:
+        // OK to do nothing
     }
 });
