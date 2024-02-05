@@ -203,26 +203,26 @@ map.on('closeAllPopups', () => {
 document.addEventListener('click', function(event) {
     const ed = divisions[0];
     const lea = divisions[1];
-    const on = (event.target.id) == ed? ed : lea;
-    const off = (event.target.id) == ed? lea : ed;
+    let on;
+    let off;
+
+    if (event.target.id == ed) {
+        on = ed;
+        off = lea;
+        // toggle(on, off);
+        // registerLayerClick(on, false);
+        // registerLayerClick(off, true);
+    }
+    if (event.target.id == lea) {
+        on = lea;
+        off = ed;
+        // toggle(on, off);
+        // registerLayerClick(on, false);
+        // registerLayerClick(off, true);
+    }
     toggle(on, off);
     registerLayerClick(on, false);
     registerLayerClick(off, true);
-
-    // if (event.target.id == ed) {
-    //     const on = ed;
-    //     const off = lea;
-    //     toggle(on, off);
-    //     registerLayerClick(on, false);
-    //     registerLayerClick(off, true);
-    // }
-    // if (event.target.id == lea) {
-    //     const on = lea;
-    //     const off = ed;
-    //     toggle(on, off);
-    //     registerLayerClick(on, false);
-    //     registerLayerClick(off, true);
-    // }
 
     if (event.target.id == 'locate') {
         navigator.geolocation.getCurrentPosition(glSuccess, glError, {
