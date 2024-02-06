@@ -30,6 +30,7 @@ function getProperties(e) {
             'type': 'LEA',
             'county': `${e.features[0]['properties']['COUNTY']}`,
             'title': `Name: ${e.features[0]['properties']['CSO_LEA']}`,
+            'raw_id': e.features[0]['properties']['LEA_ID'],
             'id': `ID: ${e.features[0]['properties']['LEA_ID']}`,
             'median_income': `Median Income (2021): ${formatter.format(e.features[0]['properties']['MEDIAN_INCOME'])}`,
             'median_price': `Median House Price (all transactions, 2021): ${formatter.format(e.features[0]['properties']['MEDIAN_PRICE'])}`
@@ -38,6 +39,7 @@ function getProperties(e) {
             'type': 'Electoral Division',
             'county': `${e.features[0]['properties']['COUNTY_ENGLISH']}`,
             'title': `Name: ${e.features[0]['properties']['ED_ENGLISH']}`,
+            'raw_id': e.features[0]['properties']['ED_ID_STR'],
             'id': `ID: ${e.features[0]['properties']['ED_ID_STR']}`
         };
     let coordinates = e.lngLat;
@@ -90,7 +92,7 @@ function getProperties(e) {
         .setHTML(template)
         .addTo(map);
 
-    updateId(description.id);
+    updateId(description.raw_id);
 }
 
 function cursorIn(e) {
