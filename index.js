@@ -90,7 +90,7 @@ function getProperties(e) {
         .setHTML(template)
         .addTo(map);
 
-    updateId(oid);
+    updateId(description.id);
 }
 
 function cursorIn(e) {
