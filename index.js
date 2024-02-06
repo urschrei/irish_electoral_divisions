@@ -223,22 +223,22 @@ document.addEventListener('click', function(event) {
     const ed = divisions[0];
     const lea = divisions[1];
     switch (event.target.id) {
-    case ed: {
-        makeActive(ed);
-        break;
-    }
-    case lea: {
-        makeActive(lea);
-        break;
-    }
-    case 'locate': {
-        navigator.geolocation.getCurrentPosition(glSuccess, glError, {
-            enableHighAccuracy: true,
-            timeout: 2500
-        });
-        break;
-    }
-    default:
+        case ed: {
+            makeActive(ed);
+            break;
+        }
+        case lea: {
+            makeActive(lea);
+            break;
+        }
+        case 'locate': {
+            navigator.geolocation.getCurrentPosition(glSuccess, glError, {
+                enableHighAccuracy: true,
+                timeout: 2500
+            });
+            break;
+        }
+        default:
         // OK to do nothing
     }
 });
