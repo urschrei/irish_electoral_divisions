@@ -89,6 +89,8 @@ function getProperties(e) {
         .setLngLat(coordinates)
         .setHTML(template)
         .addTo(map);
+
+    updateId(oid);
 }
 
 function cursorIn(e) {
@@ -198,6 +200,19 @@ map.on('closeAllPopups', () => {
         // swallow irrelevant error
     }
 });
+
+function updateId(id) {
+// Get current URL parts
+    const path = window.location.pathname;
+    const params = new URLSearchParams(window.location.search);
+    const hash = window.location.hash;
+
+    // Update query string values
+    params.set('id', id);
+
+    // Update URL
+    window.history.replaceState({}, '', `${path}?${params.toString()}${hash}`);
+}
 
 function makeActive(division) {
     const ed = divisions[0];
