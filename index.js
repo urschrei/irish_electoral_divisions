@@ -276,16 +276,24 @@ function makeActive(division) {
     document.getElementById(division).checked = true;
 }
 
+// Add a Voter Guide 24 link if it's available
 function makeLink(id) {
     const trailing = di_link.get(id);
+    let parent = document.getElementById('le24');
     if (trailing) {
+        while (parent.firstChild) {
+            parent.removeChild(parent.lastChild);
+        }
         const href = `https://dublinvoterguide2024.ie/areas/fingal-county-council/${trailing}`;
+        let mark = document.createElement('mark');
         let link = document.createElement('a');
         link.href = href;
         let linktext = document.createTextNode('Voter Guide 24 candidate info');
         link.appendChild(linktext);
-        let parent = document.getElementById('le24');
-        parent.appendChild(link);
+        mark.appendChild(link);
+        parent.appendChild(mark);
+    } else {
+        parent.textContent = '';
     }
 }
 
