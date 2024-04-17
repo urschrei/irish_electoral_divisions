@@ -71,39 +71,7 @@ function getProperties(e) {
     while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
         coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
     }
-    const template = division === to_check?
-        `<div class="row m-1">
-            <div class="container">
-                <div class="col">
-                      <div class="card text-bg-secondary">
-                            <div class="card-header">${description.type}</div>
-                            <div class="card-body">
-                                <h5 class="card-title">${description.id}</h5>
-                                <h6 class="card-subtitle mb-2 text-orange text-opacity-75">${description.county}</h6>
-                                <ul class="list-group list-group-flush">
-                                    <li class="list-group-item">${description.title}</li>
-                                    <li class="list-group-item">${description.median_income}</li>
-                                    <li class="list-group-item">${description.median_price}</li>
-                                </ul>
-                            </div>
-                      </div>
-                </div>
-            </div>
-        </div>`:
-        `<div class="row m-1">
-            <div class="container">
-                <div class="col">
-                    <div class="card text-bg-secondary">
-                        <div class="card-header">${description.type}</div>
-                        <div class="card-body">
-                            <h5 class="card-title">${description.id}</h5>
-                            <h6 class="card-subtitle mb-2 text-orange text-opacity-75">${description.county}</h6>
-                            <p class="card-text">${description.title}</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>`;
+    const template = division === to_check? lea_template(description): ed_template(description);
     map.setPaintProperty(activeLayer, 'fill-opacity',
         ['match',
             ['get', 'OBJECTID'], oid, 0.5 , 0
@@ -254,6 +222,44 @@ function getUniqueFeatures(features, comparatorProperty) {
         }
     }
     return uniqueFeatures;
+}
+
+function lea_template(description) {
+    return `<div class="row m-1">
+                <div class="container">
+                    <div class="col">
+                          <div class="card text-bg-secondary">
+                                <div class="card-header">${description.type}</div>
+                                <div class="card-body">
+                                    <h5 class="card-title">${description.id}</h5>
+                                    <h6 class="card-subtitle mb-2 text-orange text-opacity-75">${description.county}</h6>
+                                    <ul class="list-group list-group-flush">
+                                        <li class="list-group-item">${description.title}</li>
+                                        <li class="list-group-item">${description.median_income}</li>
+                                        <li class="list-group-item">${description.median_price}</li>
+                                    </ul>
+                                </div>
+                          </div>
+                    </div>
+                </div>
+            </div>`;
+}
+
+function ed_template(description) {
+    return `<div class="row m-1">
+                <div class="container">
+                    <div class="col">
+                        <div class="card text-bg-secondary">
+                            <div class="card-header">${description.type}</div>
+                            <div class="card-body">
+                                <h5 class="card-title">${description.id}</h5>
+                                <h6 class="card-subtitle mb-2 text-orange text-opacity-75">${description.county}</h6>
+                                <p class="card-text">${description.title}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>`;
 }
 
 function makeActive(division) {
