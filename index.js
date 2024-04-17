@@ -216,6 +216,24 @@ function updateId(id) {
     window.history.replaceState({}, '', `${path}?${params.toString()}${hash}`);
 }
 
+// Because features come from tiled vector data,
+// feature geometries may be split
+// or duplicated across tile boundaries.
+// As a result, features may appear
+// multiple times in query results.
+function getUniqueFeatures(features, comparatorProperty) {
+    const uniqueIds = new Set();
+    const uniqueFeatures = [];
+    for (const feature of features) {
+        const id = feature.properties[comparatorProperty];
+        if (!uniqueIds.has(id)) {
+            uniqueIds.add(id);
+            uniqueFeatures.push(feature);
+        }
+    }
+    return uniqueFeatures;
+}
+
 function makeActive(division) {
     const ed = divisions[0];
     const lea = divisions[1];
