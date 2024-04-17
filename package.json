@@ -19,7 +19,7 @@
   },
   "dependencies": {
     "@mapbox/mapbox-gl-geocoder": "^5.0.2",
-    "bootstrap": "^5.3.2",
+    "bootstrap": "^5.3.3",
     "mapbox-gl": "^3.3.0"
   }
 }
