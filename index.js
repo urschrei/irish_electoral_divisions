@@ -16,6 +16,26 @@ const formatter = new Intl.NumberFormat('en-IE', {
     minimumFractionDigits: 0, // (this suffices for whole numbers, but will print 2500.10 as $2,500.1)
     maximumFractionDigits: 0, // (causes 2500.99 to be printed as $2,501)
 });
+const di_link = {
+    '13260429': 'Artane-Whitehall',
+    '13260420': 'Ballymun-Finglas',
+    '13260422': 'Ballyfermot-Drimnagh',
+    '13260421': 'Cabra-Glasnevin',
+    '13260427': 'Clontarf',
+    '13260428': 'Donaghmede',
+    '13260423': 'Kimmage-Rathmines',
+    '13260426': 'North-Inner-City',
+    '13260424': 'Pembroke',
+    '13260425': 'South-East-Inner-City',
+    '13260430': 'South-West-Inner-City',
+    '13260417': 'Balbriggan',
+    '13260403': 'Castleknock',
+    '13260404': 'Howth-Malahide',
+    '13260402': 'Blanchardstown-Mulhuddart',
+    '13260401': 'Swords',
+    '13260418': 'Ongar',
+    '13260400': 'Rush-Lusk',
+};
 let popup;
 
 function getProperties(e) {
@@ -42,6 +62,9 @@ function getProperties(e) {
             'raw_id': e.features[0]['properties']['ED_ID_STR'],
             'id': `ID: ${e.features[0]['properties']['ED_ID_STR']}`
         };
+    if (division === to_check) {
+        makeLink(e.features[0]['properties']['LEA_ID']);
+    }
     let coordinates = e.lngLat;
     // // Ensure that if the map is zoomed out such that multiple
     // // copies of the feature are visible, the popup appears
@@ -126,7 +149,7 @@ function glSuccess(position) {
     const lat = position.coords.latitude;
     map.flyTo({
         center: [lon, lat],
-        zoom: 14,
+        zoom: 15,
         essential: true
     });
 }
@@ -252,6 +275,19 @@ function makeActive(division) {
         registerLayerClick(off, true);
     }
     document.getElementById(division).checked = true;
+}
+
+function makeLink(id) {
+    const trailing = di_link.get(id);
+    if (trailing) {
+        const href = `https://dublinvoterguide2024.ie/areas/fingal-county-council/${trailing}`;
+        let link = document.createElement('a');
+        link.href = href;
+        let linktext = document.createTextNode('Voter Guide 24 candidate info');
+        link.appendChild(linktext);
+        let parent = document.getElementById('le24');
+        parent.appendChild(link);
+    }
 }
 
 document.addEventListener('click', function(event) {
