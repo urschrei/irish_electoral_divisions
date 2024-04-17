@@ -16,26 +16,25 @@ const formatter = new Intl.NumberFormat('en-IE', {
     minimumFractionDigits: 0, // (this suffices for whole numbers, but will print 2500.10 as $2,500.1)
     maximumFractionDigits: 0, // (causes 2500.99 to be printed as $2,501)
 });
-const di_link = {
-    '13260429': 'Artane-Whitehall',
-    '13260420': 'Ballymun-Finglas',
-    '13260422': 'Ballyfermot-Drimnagh',
-    '13260421': 'Cabra-Glasnevin',
-    '13260427': 'Clontarf',
-    '13260428': 'Donaghmede',
-    '13260423': 'Kimmage-Rathmines',
-    '13260426': 'North-Inner-City',
-    '13260424': 'Pembroke',
-    '13260425': 'South-East-Inner-City',
-    '13260430': 'South-West-Inner-City',
-    '13260417': 'Balbriggan',
-    '13260403': 'Castleknock',
-    '13260404': 'Howth-Malahide',
-    '13260402': 'Blanchardstown-Mulhuddart',
-    '13260401': 'Swords',
-    '13260418': 'Ongar',
-    '13260400': 'Rush-Lusk',
-};
+let di_link = new Map();
+di_link.set('13260429', 'Artane-Whitehall');
+di_link.set('13260420', 'Ballymun-Finglas');
+di_link.set('13260422', 'Ballyfermot-Drimnagh');
+di_link.set('13260421', 'Cabra-Glasnevin');
+di_link.set('13260427', 'Clontarf');
+di_link.set('13260428', 'Donaghmede');
+di_link.set('13260423', 'Kimmage-Rathmines');
+di_link.set('13260426', 'North-Inner-City');
+di_link.set('13260424', 'Pembroke');
+di_link.set('13260425', 'South-East-Inner-City');
+di_link.set('13260430', 'South-West-Inner-City');
+di_link.set('13260417', 'Balbriggan');
+di_link.set('13260403', 'Castleknock');
+di_link.set('13260404', 'Howth-Malahide');
+di_link.set('13260402', 'Blanchardstown-Mulhuddart');
+di_link.set('13260401', 'Swords');
+di_link.set('13260418', 'Ongar');
+di_link.set('13260400', 'Rush-Lusk');
 let popup;
 
 function getProperties(e) {
