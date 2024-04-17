@@ -39,7 +39,7 @@
    <!-- https://stackoverflow.com/questions/57557379/bootstrap-how-to-make-a-simple-full-height-layout  -->
     <div class="container-fluid min-vh-100 d-flex flex-column">
         <div class="row">
-            <div class="col-sm-4 mt-2 mb-2">
+            <div class="col-sm-6 mt-2 mb-2">
                 <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
                     <input type="radio" class="btn-check" name="btnradio" id="lea" autocomplete="off">
                     <label class="btn btn-outline-pink" for="lea">Local Electoral Areas</label>
@@ -48,14 +48,16 @@
                     <button id="locate" type="button" class="btn btn-outline-orange">Locate me</button>
                 </div>
             </div>
-            <div class="col-sm-4 mt-2 mb-2" id="le24"></div>
-            <div class="col-sm-4 mt-2 mb-2">
-                <small><p class="text-sm-start text-md-end"><span class="text-muted">A <a href="https://mastodon.social/@urschrei">Stephan H&uuml;gel</a> distraction 🍉. <a href="https://github.com/urschrei/irish_electoral_divisions?tab=readme-ov-file#what">Source</a>.</span></p></small>
-            </div>
+            <div class="col-sm-6 mt-2 mb-2" id="le24"></div>
         </div>
         <div class="row flex-grow-1">
             <div class="col mb-2">
                 <div class="h-100 border border-black rounded" id="map"></div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col mt-2 mb-1">
+                <small><p class="text-start"><span class="text-muted">A <a href="https://mastodon.social/@urschrei">Stephan H&uuml;gel</a> distraction 🍉. <a href="https://github.com/urschrei/irish_electoral_divisions?tab=readme-ov-file#what">Source</a>.</span></p></small>
             </div>
         </div>
     </div>
