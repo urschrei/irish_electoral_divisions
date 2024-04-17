@@ -15,3 +15,11 @@ $theme-colors: map-merge($theme-colors, $custom-colors);
 // mapbox-gl isn't scss, but the compiler seems OK with it anyway
 @import "../node_modules/mapbox-gl/dist/mapbox-gl";
 @import "../node_modules/@mapbox/mapbox-gl-geocoder/dist/mapbox-gl-geocoder";
+
+body {
+  min-height: 100vh;
+  min-height: -webkit-fill-available;
+}
+html {
+  height: -webkit-fill-available;
+}
