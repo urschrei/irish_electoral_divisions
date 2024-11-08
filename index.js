@@ -17,24 +17,24 @@ const formatter = new Intl.NumberFormat('en-IE', {
     maximumFractionDigits: 0, // (causes 2500.99 to be printed as $2,501)
 });
 let di_link = new Map();
-di_link.set('13260429', '/dublin-city-council/artane-whitehall');
-di_link.set('13260420', '/dublin-city-council/ballymun-finglas');
-di_link.set('13260422', '/dublin-city-council/ballyfermot-drimnagh');
-di_link.set('13260421', '/dublin-city-council/cabra-glasnevin');
-di_link.set('13260427', '/dublin-city-council/clontarf');
-di_link.set('13260428', '/dublin-city-council/donaghmede');
-di_link.set('13260423', '/dublin-city-council/kimmage-rathmines');
-di_link.set('13260426', '/dublin-city-council/north-inner-city');
-di_link.set('13260424', '/dublin-city-council/pembroke');
-di_link.set('13260425', '/dublin-city-council/south-east-inner-city');
-di_link.set('13260430', '/dublin-city-council/south-west-inner-city');
-di_link.set('13260417', '/fingal-county-council/balbriggan');
-di_link.set('13260403', '/fingal-county-council/castleknock');
-di_link.set('13260404', '/fingal-county-council/howth-malahide');
-di_link.set('13260402', '/fingal-county-council/blanchardstown-mulhuddart');
-di_link.set('13260401', '/fingal-county-council/swords');
-di_link.set('13260418', '/fingal-county-council/ongar');
-di_link.set('13260400', '/fingal-county-council/rush-lusk');
+di_link.set('13260429', 'dublin-city-council/artane-whitehall');
+di_link.set('13260420', 'dublin-city-council/ballymun-finglas');
+di_link.set('13260422', 'dublin-city-council/ballyfermot-drimnagh');
+di_link.set('13260421', 'dublin-city-council/cabra-glasnevin');
+di_link.set('13260427', 'dublin-city-council/clontarf');
+di_link.set('13260428', 'dublin-city-council/donaghmede');
+di_link.set('13260423', 'dublin-city-council/kimmage-rathmines');
+di_link.set('13260426', 'dublin-city-council/north-inner-city');
+di_link.set('13260424', 'dublin-city-council/pembroke');
+di_link.set('13260425', 'dublin-city-council/south-east-inner-city');
+di_link.set('13260430', 'dublin-city-council/south-west-inner-city');
+di_link.set('13260417', 'fingal-county-council/balbriggan');
+di_link.set('13260403', 'fingal-county-council/castleknock');
+di_link.set('13260404', 'fingal-county-council/howth-malahide');
+di_link.set('13260402', 'fingal-county-council/blanchardstown-mulhuddart');
+di_link.set('13260401', 'fingal-county-council/swords');
+di_link.set('13260418', 'fingal-county-council/ongar');
+di_link.set('13260400', 'fingal-county-council/rush-lusk');
 let popup;
 
 function getProperties(e) {
