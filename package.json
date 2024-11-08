@@ -18,8 +18,8 @@
     "postcss": "^8.4.33"
   },
   "dependencies": {
-    "@mapbox/mapbox-gl-geocoder": "^5.0.2",
+    "@mapbox/mapbox-gl-geocoder": "^5.0.3",
     "bootstrap": "^5.3.3",
-    "mapbox-gl": "^3.3.0"
+    "mapbox-gl": "^3.7.0"
   }
 }
