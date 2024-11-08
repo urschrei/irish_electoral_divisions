@@ -181,7 +181,7 @@ map.on('load', () => {
     });
     map.addControl(geocoder);
     // make LEA active by default
-    makeActive(divisions[1]);
+    makeActive(divisions[0]);
 });
 
 // this is a custom event!
