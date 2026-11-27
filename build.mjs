@@ -38,3 +38,5 @@ let result = await esbuild.build({
 });
 // console.log(await esbuild.analyzeMetafile(result.metafile));
 fs.writeFileSync('static/meta.json', JSON.stringify(result.metafile));
+// MapLibre v6 loads its web worker from a separate module next to the bundle (resolved via import.meta.url)
+fs.copyFileSync('node_modules/maplibre-gl/dist/maplibre-gl-worker.mjs', 'static/maplibre-gl-worker.mjs');
