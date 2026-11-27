@@ -247,7 +247,7 @@ function csoLayers(division) {
 
 export const map = new maplibregl.Map({
     container: 'map',
-    style: 'https://tiles.openfreemap.org/styles/positron',
+    style: 'https://tiles.openfreemap.org/styles/bright',
     center: [-6.263, 53.3444],
     zoom: 11.36,
     maxBounds: bounds,
