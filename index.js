@@ -248,7 +248,9 @@ map.on('load', () => {
     // required for Bootstrap layout
     map.resize();
     map.addSource('cso', csoSource);
-    divisions.forEach((division) => csoLayers(division).forEach((layer) => map.addLayer(layer)));
+    // Put the divisions below the basemap labels.
+    const firstLabel = map.getStyle().layers.find((layer) => layer.type === 'symbol')?.id;
+    divisions.forEach((division) => csoLayers(division).forEach((layer) => map.addLayer(layer, firstLabel)));
     map.addControl(geocoder);
     // make LEA active by default
     makeActive(divisions[0]);
