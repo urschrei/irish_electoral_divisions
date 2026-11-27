@@ -264,7 +264,7 @@ map.on('load', () => {
     const firstLabel = map.getStyle().layers.find((layer) => layer.type === 'symbol')?.id;
     divisions.forEach((division) => csoLayers(division).forEach((layer) => map.addLayer(layer, firstLabel)));
     map.addControl(geocoder);
-    // make LEA active by default
+    // make ED active by default
     makeActive(divisions[0]);
 });
 
