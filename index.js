@@ -1,8 +1,9 @@
 import 'bootstrap';
 import './style.scss';
-import mapboxgl from 'mapbox-gl';
-import MapboxGeocoder from '@mapbox/mapbox-gl-geocoder';
+import * as maplibregl from 'maplibre-gl';
+import MaplibreGeocoder from '@maplibre/maplibre-gl-geocoder';
 
+// URL-restricted public token: used only to fetch the CSO vector tileset hosted on Mapbox
 const accessToken = 'pk.eyJ1IjoidXJzY2hyZWkiLCJhIjoiY2xzMzd6NzdnMHMxejJzbWszbHA2ZGk1ZCJ9.ovSNXA6ytYytX8zlex81iA';
 const positions = ['base', 'middle', 'top'];
 const divisions = ['ed', 'lea'];
@@ -77,7 +78,7 @@ function getProperties(e) {
             ['get', 'OBJECTID'], oid, 0.5 , 0
         ]
     );
-    popup = new mapboxgl.Popup()
+    popup = new maplibregl.Popup()
         .setLngLat(coordinates)
         .setHTML(template)
         .addTo(map);
@@ -144,41 +145,114 @@ function registerLayerClick(division, reverse) {
     }
 }
 
-const geocoder = new MapboxGeocoder({
-    accessToken: accessToken,
-    mapboxgl: mapboxgl,
-    options: {
-        'placeholder': 'Address search',
-        'countries': 'ie',
-        'routing': false,
-        'proximity': 'ip',
-        'types': 'address,place,locality',
-        'language': 'en'
-    }
+// Nominatim geocoding: searches only on Enter (showResultsWhileTyping defaults to false),
+// as required by https://operations.osmfoundation.org/policies/nominatim/
+const geocoderApi = {
+    forwardGeocode: async (config) => {
+        const features = [];
+        try {
+            const params = new URLSearchParams({
+                q: config.query,
+                format: 'geojson',
+                polygon_geojson: 0,
+                addressdetails: 0,
+                countrycodes: 'ie',
+                'accept-language': 'en',
+                viewbox: bounds.flat().join(','),
+            });
+            const response = await fetch(`https://nominatim.openstreetmap.org/search?${params}`);
+            const geojson = await response.json();
+            for (const feature of geojson.features) {
+                const [minx, miny, maxx, maxy] = feature.bbox;
+                features.push({
+                    type: 'Feature',
+                    geometry: feature.geometry,
+                    place_name: feature.properties.display_name,
+                    properties: feature.properties,
+                    text: feature.properties.display_name,
+                    place_type: ['place'],
+                    center: [(minx + maxx) / 2, (miny + maxy) / 2],
+                    bbox: feature.bbox,
+                });
+            }
+        } catch (e) {
+            console.error(`Failed to forwardGeocode with error: ${e}`);
+        }
+        return { features };
+    },
+};
+
+const geocoder = new MaplibreGeocoder(geocoderApi, {
+    maplibregl: maplibregl,
+    placeholder: 'Address search',
+    countries: 'ie',
+    language: 'en',
 });
 
-export const map = new mapboxgl.Map({
-    accessToken: accessToken,
+// CSO ED and LEA polygons (Mapbox-hosted vector tileset)
+const csoSource = {
+    type: 'vector',
+    tiles: [`https://api.mapbox.com/v4/urschrei.cso_2022/{z}/{x}/{y}.vector.pbf?access_token=${accessToken}`],
+    minzoom: 3,
+    maxzoom: 13,
+    bounds: [-10.678711, 51.399206, -5.976562, 55.453941],
+    attribution: '<a href="https://www.mapbox.com/about/maps/">© Mapbox</a>',
+};
+
+const glow = {
+    ed: { fill: 'rgb(120, 66, 255)', base: 'rgb(74, 0, 255)', middle: 'rgb(120, 66, 255)' },
+    lea: { fill: 'rgb(228, 8, 253)', base: 'hsl(294, 88%, 45%)', middle: 'hsl(294, 98%, 51%)' },
+};
+
+function csoLayers(division) {
+    const common = { source: 'cso', 'source-layer': `cso-${division}-polygons` };
+    const line = { ...common, type: 'line', layout: { 'line-join': 'bevel' } };
+    const lineTransition = { 'line-opacity-transition': { duration: 500 } };
+    return [
+        {
+            ...common, id: `cso-${division}-polygons`, type: 'fill',
+            paint: { 'fill-color': glow[division].fill, 'fill-opacity': 0, 'fill-opacity-transition': { duration: 1000 } },
+        },
+        {
+            ...line, id: `cso-${division}-polygons-base`,
+            paint: {
+                'line-color': glow[division].base, 'line-opacity': 0, 'line-blur': 3,
+                'line-width': ['interpolate', ['linear'], ['zoom'], 10, 1.5, 13, 10], ...lineTransition,
+            },
+        },
+        {
+            ...line, id: `cso-${division}-polygons-middle`,
+            paint: {
+                'line-color': glow[division].middle, 'line-opacity': 0, 'line-blur': 3,
+                'line-width': ['interpolate', ['linear'], ['zoom'], 10, 1.5, 13, 5], ...lineTransition,
+            },
+        },
+        {
+            ...line, id: `cso-${division}-polygons-top`,
+            paint: {
+                'line-color': 'hsl(31, 100%, 97%)', 'line-opacity': 0,
+                'line-width': ['interpolate', ['linear'], ['zoom'], 10, 0.5, 13, 1], ...lineTransition,
+            },
+        },
+    ];
+}
+
+export const map = new maplibregl.Map({
     container: 'map',
-    style: 'mapbox://styles/urschrei/cls285qtr00ht01qqd92g58mt',
+    style: 'https://tiles.openfreemap.org/styles/positron',
+    center: [-7.94, 53.11],
+    zoom: 6,
     maxBounds: bounds,
-    customAttribution: ['<a href="https://www.geohive.ie/datasets/60b27acc557d4e8bb4b5a781f0622c39_1/about">Electoral Division</a> and <a href="https://www.geohive.ie/datasets/e73ec0ad02654778adca35fa86b24a5f_3/about">LEA data</a> provided by CSO'],
+    attributionControl: {
+        customAttribution: ['<a href="https://www.geohive.ie/datasets/60b27acc557d4e8bb4b5a781f0622c39_1/about">Electoral Division</a> and <a href="https://www.geohive.ie/datasets/e73ec0ad02654778adca35fa86b24a5f_3/about">LEA data</a> provided by CSO'],
+    },
 });
 
 map.on('load', () => {
     // required for Bootstrap layout
     map.resize();
-    // assign correct opacity duration to each layer. Quadratic, but it's six values
-    positions.forEach((position) => {
-        divisions.forEach((division) => {
-            const template = `cso-${division}-polygons-${position}`;
-            map.setPaintProperty(template, 'line-opacity-transition', {'duration': 500});
-        });
-    });
-    divisions.forEach((division) => {
-        const template = `cso-${division}-polygons`;
-        map.setPaintProperty(template, 'fill-opacity-transition', {'duration': 1000});
-    });
+    map.addSource('cso', csoSource);
+    divisions.forEach((division) => csoLayers(division).forEach((layer) => map.addLayer(layer)));
     map.addControl(geocoder);
     // make LEA active by default
     makeActive(divisions[0]);
