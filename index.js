@@ -2,9 +2,8 @@ import 'bootstrap';
 import './style.scss';
 import * as maplibregl from 'maplibre-gl';
 import MaplibreGeocoder from '@maplibre/maplibre-gl-geocoder';
+import { Protocol } from 'pmtiles';
 
-// URL-restricted public token: used only to fetch the CSO vector tileset hosted on Mapbox
-const accessToken = 'pk.eyJ1IjoidXJzY2hyZWkiLCJhIjoiY2xzMzd6NzdnMHMxejJzbWszbHA2ZGk1ZCJ9.ovSNXA6ytYytX8zlex81iA';
 const positions = ['base', 'middle', 'top'];
 const divisions = ['ed', 'lea'];
 const bounds = [
@@ -52,8 +51,8 @@ function getProperties(e) {
             'title': `Name: ${e.features[0]['properties']['CSO_LEA']}`,
             'raw_id': e.features[0]['properties']['LEA_ID'],
             'id': `ID: ${e.features[0]['properties']['LEA_ID']}`,
-            'median_income': `Median Income (2021): ${formatter.format(e.features[0]['properties']['MEDIAN_INCOME'])}`,
-            'median_price': `Median House Price (all transactions, 2021): ${formatter.format(e.features[0]['properties']['MEDIAN_PRICE'])}`
+            'median_income': `Median Income (${e.features[0]['properties']['FIGURES_YEAR']}): ${formatter.format(e.features[0]['properties']['MEDIAN_INCOME'])}`,
+            'median_price': `Median House Price (all transactions, ${e.features[0]['properties']['FIGURES_YEAR']}): ${formatter.format(e.features[0]['properties']['MEDIAN_PRICE'])}`
         }:
         {
             'type': 'Electoral Division',
@@ -189,14 +188,11 @@ const geocoder = new MaplibreGeocoder(geocoderApi, {
     language: 'en',
 });
 
-// CSO ED and LEA polygons (Mapbox-hosted vector tileset)
+// CSO ED and LEA polygons, built by data/build_tiles.py
+maplibregl.addProtocol('pmtiles', new Protocol().tile);
 const csoSource = {
     type: 'vector',
-    tiles: [`https://api.mapbox.com/v4/urschrei.cso_2022/{z}/{x}/{y}.vector.pbf?access_token=${accessToken}`],
-    minzoom: 3,
-    maxzoom: 13,
-    bounds: [-10.678711, 51.399206, -5.976562, 55.453941],
-    attribution: '<a href="https://www.mapbox.com/about/maps/">© Mapbox</a>',
+    url: `pmtiles://${new URL('cso_2022.pmtiles', import.meta.url)}`,
 };
 
 const glow = {
