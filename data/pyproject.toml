@@ -1,0 +1,10 @@
+[project]
+name = "cso-tiles"
+version = "0.1.0"
+requires-python = ">=3.13"
+dependencies = [
+    "geopandas>=1.2.0",
+    "manby>=0.2.11",
+    "pyarrow>=26.0.1",
+    "pyogrio>=0.13.0",
+]
