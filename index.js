@@ -248,8 +248,8 @@ function csoLayers(division) {
 export const map = new maplibregl.Map({
     container: 'map',
     style: 'https://tiles.openfreemap.org/styles/positron',
-    center: [-7.94, 53.11],
-    zoom: 6,
+    center: [-6.263, 53.3444],
+    zoom: 11.36,
     maxBounds: bounds,
     attributionControl: {
         customAttribution: ['<a href="https://www.geohive.ie/datasets/60b27acc557d4e8bb4b5a781f0622c39_1/about">Electoral Division</a> and <a href="https://www.geohive.ie/datasets/e73ec0ad02654778adca35fa86b24a5f_3/about">LEA data</a> provided by CSO'],
