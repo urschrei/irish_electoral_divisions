@@ -8,19 +8,29 @@ You can find the area(s) in which you're located by pressing the "locate me" but
 You search for a specific place and see its ED and LEA information by using the search field on the map.
 
 # Data Sources
-As of February 2024, these are the most up-to-date data, refreshed in November 2023.
-
 [CSO Electoral Divisions, 2022](https://www.geohive.ie/datasets/60b27acc557d4e8bb4b5a781f0622c39_1/about)
 
 [CSO Local Electoral Areas, 2022](https://www.geohive.ie/datasets/e73ec0ad02654778adca35fa86b24a5f_3/about)
 
-[CSO: Characteristics of Residential Property Purchasers - Prices, Ages and Incomes at Local Electoral Areas](https://www.cso.ie/en/releasesandpublications/fp/fp-cropp/characteristicsofresidentialpropertypurchasers-pricesagesandincomesatlocalelectoralareaslea2021/)
+[CSO table CRP15: Characteristics of Residential Property Purchasers, by CSO Local Electoral Areas 2022](https://data.cso.ie/table/CRP15). The map shows the 2024 median income and median price for all transactions, from stamp duty filings.
+
+The basemap is [OpenFreeMap](https://openfreemap.org), with data from [OpenStreetMap](https://www.openstreetmap.org/copyright). Address search uses [Nominatim](https://nominatim.org).
+
+# Rebuilding the Tiles
+The ED and LEA polygons are in `static/cso_2022.pmtiles`. To build this file again from the sources above, you need [uv](https://docs.astral.sh/uv/):
+
+```sh
+cd data
+uv run build_tiles.py
+```
+
+The script stores its downloads in `data/raw/`. Delete that directory to download new data. To use a different year of CSO figures, change `CSO_YEAR` in `data/build_tiles.py`.
 
 # CSO Data License
 [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/)
 
 # Data Modification Statement
-Some polygons have been simplified at the 1 metre level for display purposes. This should have no practical impact on the determination of the ED or LEA in which a given point is contained. If you _are_ concerned about the accuracy of the data on the basis of your own analysis, please get in touch.
+The polygons have been simplified at the 1 metre level for display purposes, and self-intersecting rings in the source data have been repaired. This should have no practical impact on the determination of the ED or LEA in which a given point is contained. If you _are_ concerned about the accuracy of the data on the basis of your own analysis, please get in touch.
 
 # Something doesn't work!
 Open an [issue](https://github.com/urschrei/irish_electoral_divisions/issues). No guarantees, though: we're all busy.
