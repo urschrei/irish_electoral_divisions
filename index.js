@@ -110,8 +110,15 @@ function toggle(on, off) {
 
 }
 
+function setLocateButton(text, disabled) {
+    const elem = document.getElementById('locate');
+    elem.innerText = text;
+    elem.disabled = disabled;
+}
+
 // Fly to point if geolocation is successful
 function glSuccess(position) {
+    setLocateButton('Locate me', false);
     const lon = position.coords.longitude;
     const lat = position.coords.latitude;
     map.flyTo({
@@ -121,13 +128,18 @@ function glSuccess(position) {
     });
 }
 
-// If we can't geolocate for some reason
-function glError() {
-    let elem = document.getElementById('locate');
-    elem.classList.add('btn-dark');
-    elem.classList.remove('btn-outline-orange');
-    elem.innerText = 'Couldn\'t geolocate you';
-    elem.disabled = true;
+// Show the geolocation error. A denied permission is permanent. After other errors, the user can try again.
+function glError(error) {
+    if (error.code === error.PERMISSION_DENIED) {
+        const elem = document.getElementById('locate');
+        elem.classList.add('btn-dark');
+        elem.classList.remove('btn-outline-orange');
+        setLocateButton('Location access denied', true);
+    } else if (error.code === error.TIMEOUT) {
+        setLocateButton('Location timed out: try again', false);
+    } else {
+        setLocateButton('Location unavailable: try again', false);
+    }
 }
 
 // Register and unregister click handlers for the active layer
@@ -388,9 +400,11 @@ document.addEventListener('click', function(event) {
             break;
         }
         case 'locate': {
+            setLocateButton('Locating\u2026', true);
             navigator.geolocation.getCurrentPosition(glSuccess, glError, {
                 enableHighAccuracy: true,
-                timeout: 2500
+                timeout: 15000,
+                maximumAge: 60000
             });
             break;
         }
